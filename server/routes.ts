@@ -1,8 +1,7 @@
 import type { Express } from "express";
-import { createServer, type Server } from "http";
+import type { Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
-import { log } from "./vite";
 import {
   insertRoomSchema,
   insertPassengerSchema,
@@ -31,13 +30,11 @@ function broadcast(roomId: string, message: any) {
   }
 }
 
-export async function registerRoutes(app: Express): Promise<Server> {
-  const httpServer = createServer(app);
-  
+export async function registerRoutes(httpServer: Server, app: Express): Promise<void> {
   const wss = new WebSocketServer({ server: httpServer, path: "/ws" });
 
   wss.on("connection", (ws: WSClient) => {
-    log("WebSocket client connected", "ws");
+    console.log("[ws] WebSocket client connected");
 
     ws.on("message", async (data) => {
       try {
@@ -59,7 +56,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               passengers,
             });
 
-            log(`Passenger ${message.passengerId} joined room ${message.roomId}`, "ws");
+            console.log(`[ws] Passenger ${message.passengerId} joined room ${message.roomId}`);
             break;
 
           case "chat":
@@ -130,7 +127,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             break;
         }
       } catch (error) {
-        log(`WebSocket error: ${error}`, "ws");
+        console.log(`[ws] WebSocket error: ${error}`);
       }
     });
 
@@ -151,7 +148,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         }
       }
-      log("WebSocket client disconnected", "ws");
+      console.log("[ws] WebSocket client disconnected");
     });
   });
 
@@ -268,6 +265,4 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: error.message });
     }
   });
-
-  return httpServer;
 }

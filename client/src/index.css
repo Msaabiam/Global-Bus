@@ -1,6 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Region theme variables */
+:root {
+  --region-glow: hsla(320, 90%, 60%, 0.3);
+  --region-accent: hsl(320 90% 60%);
+  --color-secondary: hsl(160 90% 50%);
+}
 
 /* LIGHT MODE */
 :root {
@@ -26,10 +35,10 @@
   --popover: 0 0% 97%;
   --popover-foreground: 0 0% 9%;
   --popover-border: 0 0% 93%;
-  --primary: 210 85% 45%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 210 8% 90%;
-  --secondary-foreground: 0 0% 15%;
+  --primary: 320 90% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 160 90% 50%;
+  --secondary-foreground: 0 0% 5%;
   --muted: 210 10% 92%;
   --muted-foreground: 0 0% 35%;
   --accent: 210 12% 94%;
@@ -110,10 +119,10 @@
   --popover: 0 0% 12%;
   --popover-foreground: 0 0% 95%;
   --popover-border: 0 0% 16%;
-  --primary: 210 85% 48%;
-  --primary-foreground: 0 0% 98%;
-  --secondary: 210 10% 18%;
-  --secondary-foreground: 0 0% 90%;
+  --primary: 320 90% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 160 90% 50%;
+  --secondary-foreground: 0 0% 5%;
   --muted: 210 12% 16%;
   --muted-foreground: 0 0% 65%;
   --accent: 210 15% 15%;
@@ -284,5 +293,44 @@
   .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
   .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
     inset: -1px;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  /* Font display for titles */
+  .font-display {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  /* Safe area padding for mobile */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
   }
 }
