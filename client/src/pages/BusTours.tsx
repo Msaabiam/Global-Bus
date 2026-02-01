@@ -471,14 +471,14 @@ export default function BusTours({ category }: BusToursProps) {
       <div className="flex-1 h-full relative overflow-hidden">
         {currentTour ? (
           <>
-            <BusVibration isMoving={true}>
+<>
               <BusWindowView 
                 tourId={currentTour.id} 
                 region={currentTour.region} 
                 tourName={currentTour.name}
               />
               <AmbientParticles type={getParticleType(currentTour.region)} count={20} />
-            </BusVibration>
+</>
 
             <div className="absolute top-4 left-4 right-4 z-20">
               <motion.div
