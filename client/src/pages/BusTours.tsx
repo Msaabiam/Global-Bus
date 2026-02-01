@@ -527,17 +527,6 @@ export default function BusTours({ category }: BusToursProps) {
               </div>
             )}
 
-            <div className="absolute inset-0 flex items-center justify-center">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="text-center"
-              >
-                <div className="text-8xl mb-4">{currentTour.flag || "🚌"}</div>
-                <p className="text-white/60 text-lg">Enjoying the virtual tour</p>
-                <p className="text-white/40 text-sm mt-2">Chat with fellow passengers or try some trivia!</p>
-              </motion.div>
-            </div>
           </>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-slate-900 via-purple-900/30 to-slate-900">
