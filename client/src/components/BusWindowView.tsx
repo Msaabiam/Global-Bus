@@ -60,51 +60,6 @@ export function BusWindowView({ tourId, region, tourName }: BusWindowViewProps) 
   const overlayColor = useMemo(() => {
     switch (region) {
       case "tokyo": return "from-purple-900/30 via-transparent to-pink-900/30";
-      case "dubai": return "from-amber-900/30 via-transparent to-orange-900/3 
-cat >> client/src/components/BusWindowView.tsx << 'EOF'
-
-export function BusWindowView({ tourId, region, tourName }: BusWindowViewProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const tourVideo = TOUR_VIDEOS[tourId] || TOUR_VIDEOS[region];
-  const sceneImage = SCENE_IMAGES[tourId] || SCENE_IMAGES[region];
-  const hasVideo = !!tourVideo;
-  
-  useEffect(() => {
-    if (videoRef.current && hasVideo) {
-      videoRef.current.play().catch(() => {});
-    }
-  }, [tourId, hasVideo]);
-
-  const overlayColor = useMemo(() => {
-    switch (region) {
-      case "tokyo": return "from-purple-900/30 via-transparent to-pink-900/30";
-      case "dubai": return "from-amber-900/30 via-transparent to-orange-900/30";
-      case "cairo": return "from-yellow-900/30 via-transparent to-amber-900/30";
-      case "stanford": return "from-red-900/30 via-transparent to-green-900/30";
-      case "ucla": return "from-blue-900/30 via-transparent to-yellow-900/30";
-      case "berkeley": return "from-blue-900/30 via-transparent to-yellow-900/30";
-      case "harvard": return "from-red-900/30 via-transparent to-black/30";
-      case "mit": return "from-red-900/30 via-transparent to-gray-900/30";
-      case "nyu": return "from-purple-900/30 via-transparent to-white/10";
-      default: return "from-slate-900/30 via-transparent to-slate-900/30";
-    }
-  }, [region]);
-
-export function BusWindowView({ tourId, region, tourName }: BusWindowViewProps) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const tourVideo = TOUR_VIDEOS[tourId] || TOUR_VIDEOS[region];
-  const sceneImage = SCENE_IMAGES[tourId] || SCENE_IMAGES[region];
-  const hasVideo = !!tourVideo;
-  
-  useEffect(() => {
-    if (videoRef.current && hasVideo) {
-      videoRef.current.play().catch(() => {});
-    }
-  }, [tourId, hasVideo]);
-
-  const overlayColor = useMemo(() => {
-    switch (region) {
-      case "tokyo": return "from-purple-900/30 via-transparent to-pink-900/30";
       case "dubai": return "from-amber-900/30 via-transparent to-orange-900/30";
       case "cairo": return "from-yellow-900/30 via-transparent to-amber-900/30";
       case "stanford": return "from-red-900/30 via-transparent to-green-900/30";
@@ -119,7 +74,7 @@ export function BusWindowView({ tourId, region, tourName }: BusWindowViewProps) 
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      <style>{`@keyframes panScene { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }`}</style>
+      <style dangerouslySetInnerHTML={{ __html: "@keyframes panScene { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }" }} />
       {hasVideo ? (
         <video
           ref={videoRef}
@@ -137,18 +92,18 @@ export function BusWindowView({ tourId, region, tourName }: BusWindowViewProps) 
         >
           <div
             className="w-1/2 h-full bg-cover bg-center"
-            style={{ backgroundImage: `url(${sceneImage})` }}
+            style={{ backgroundImage: "url(" + sceneImage + ")" }}
           />
           <div
             className="w-1/2 h-full bg-cover bg-center"
-            style={{ backgroundImage: `url(${sceneImage})` }}
+            style={{ backgroundImage: "url(" + sceneImage + ")" }}
           />
         </div>
       ) : (
         <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900" />
       )}
 
-      <div className={`absolute inset-0 bg-gradient-to-r ${overlayColor}`} />
+      <div className={"absolute inset-0 bg-gradient-to-r " + overlayColor} />
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/50" />
 
       <div className="absolute inset-0 pointer-events-none">
