@@ -12,6 +12,7 @@ import { TourSelector, Tour, TourRegion } from "@/components/TourSelector";
 import { NeonFactsBanner } from "@/components/NeonFactsBanner";
 import { TravelTransition } from "@/components/TravelTransition";
 import { AmbientParticles, getParticleType } from "@/components/AmbientParticles";
+import { BusWindowView } from "@/components/BusWindowView";
 import { useRegionTheme } from "@/components/RegionTheme";
 import { PassengerNotification, usePassengerNotifications } from "@/components/PassengerNotification";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -471,18 +472,12 @@ export default function BusTours({ category }: BusToursProps) {
         {currentTour ? (
           <>
             <BusVibration isMoving={true}>
-              <div className={`absolute inset-0 bg-gradient-to-br ${getBackgroundGradient(currentTour.region)}`}>
-                <AmbientParticles type={getParticleType(currentTour.region)} count={20} />
-                
-                <motion.div
-                  animate={{
-                    opacity: [0.1, 0.3, 0.1],
-                    scale: [1, 1.1, 1]
-                  }}
-                  transition={{ duration: 8, repeat: Infinity }}
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent"
-                />
-              </div>
+              <BusWindowView 
+                tourId={currentTour.id} 
+                region={currentTour.region} 
+                tourName={currentTour.name}
+              />
+              <AmbientParticles type={getParticleType(currentTour.region)} count={20} />
             </BusVibration>
 
             <div className="absolute top-4 left-4 right-4 z-20">
