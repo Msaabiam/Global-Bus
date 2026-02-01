@@ -50,7 +50,7 @@ export function BusWindowView({ tourId, region, tourName }: BusWindowViewProps) 
   const tourVideo = TOUR_VIDEOS[tourId] || TOUR_VIDEOS[region];
   const sceneImage = SCENE_IMAGES[tourId] || SCENE_IMAGES[region];
   const hasVideo = !!tourVideo;
-  
+
   useEffect(() => {
     if (videoRef.current && hasVideo) {
       videoRef.current.play().catch(() => {});
@@ -73,54 +73,79 @@ export function BusWindowView({ tourId, region, tourName }: BusWindowViewProps) 
   }, [region]);
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
-      <style dangerouslySetInnerHTML={{ __html: "@keyframes panScene { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }" }} />
-      {hasVideo ? (
-        <video
-          ref={videoRef}
-          src={tourVideo}
-          className="absolute inset-0 w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-        />
-      ) : sceneImage ? (
-        <div
-          className="absolute inset-0 w-[200%] h-full flex"
-          style={{ animation: "panScene 60s linear infinite" }}
-        >
-          <div
-            className="w-1/2 h-full bg-cover bg-center"
-            style={{ backgroundImage: "url(" + sceneImage + ")" }}
-          />
-          <div
-            className="w-1/2 h-full bg-cover bg-center"
-            style={{ backgroundImage: "url(" + sceneImage + ")" }}
-          />
+    <div className="absolute inset-0 overflow-hidden bg-gray-950">
+      <style dangerouslySetInnerHTML={{ __html: "\
+        @keyframes panScene { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }\
+        .pan-anim { animation: panScene 60s linear infinite; }\
+      " }} />
+
+      {/* BUS INTERIOR - dark surround with window cutout */}
+      {/* Top ceiling area */}
+      <div className="absolute top-0 left-0 right-0 h-[18%] bg-gray-900 z-20" style={{ background: "linear-gradient(180deg, #1a1a2e 0%, #16213e 100%)" }}>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-[60%] h-[3px] bg-gradient-to-r from-transparent via-yellow-500/40 to-transparent rounded-full" />
         </div>
-      ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900" />
-      )}
-
-      <div className={"absolute inset-0 bg-gradient-to-r " + overlayColor} />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/50" />
-
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 right-0 h-6 bg-gradient-to-b from-black/60 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-10 bg-gradient-to-t from-black/60 to-transparent" />
-        <div className="absolute top-0 bottom-0 left-0 w-3 bg-gradient-to-r from-black/40 to-transparent" />
-        <div className="absolute top-0 bottom-0 right-0 w-3 bg-gradient-to-l from-black/40 to-transparent" />
+        <div className="absolute bottom-0 left-[10%] right-[10%] h-[4px]" style={{ background: "linear-gradient(90deg, transparent, #c4a35a, transparent)" }} />
       </div>
 
-      <motion.div
-        className="absolute inset-0 bg-white/5"
-        animate={{ opacity: [0, 0.08, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-      />
+      {/* Left seat area */}
+      <div className="absolute top-[18%] bottom-[22%] left-0 w-[8%] z-20" style={{ background: "linear-gradient(90deg, #1a1520 0%, #2a2035 100%)" }}>
+        <div className="absolute top-[20%] bottom-[20%] right-0 w-[60%] bg-gray-800 rounded-l-lg opacity-80" />
+      </div>
 
+      {/* Right seat area */}
+      <div className="absolute top-[18%] bottom-[22%] right-0 w-[8%] z-20" style={{ background: "linear-gradient(270deg, #1a1520 0%, #2a2035 100%)" }}>
+        <div className="absolute top-[20%] bottom-[20%] left-0 w-[60%] bg-gray-800 rounded-r-lg opacity-80" />
+      </div>
+
+      {/* Bottom floor/seats area */}
+      <div className="absolute bottom-0 left-0 right-0 h-[22%] z-20" style={{ background: "linear-gradient(0deg, #0f0f1a 0%, #1a1520 100%)" }}>
+        <div className="absolute top-0 left-[5%] right-[5%] h-[3px]" style={{ background: "linear-gradient(90deg, transparent, #c4a35a60, transparent)" }} />
+        {/* Seat backs */}
+        <div className="absolute top-[15%] left-[12%] w-[25%] h-[70%] bg-gray-800 rounded-t-lg opacity-70" style={{ background: "linear-gradient(180deg, #3d3040, #2a2035)" }} />
+        <div className="absolute top-[15%] right-[12%] w-[25%] h-[70%] bg-gray-800 rounded-t-lg opacity-70" style={{ background: "linear-gradient(180deg, #3d3040, #2a2035)" }} />
+      </div>
+
+      {/* Window frame border */}
+      <div className="absolute top-[18%] bottom-[22%] left-[8%] right-[8%] z-20 pointer-events-none">
+        <div className="absolute inset-0 border-2 border-gray-700 rounded-sm opacity-60" />
+        <div className="absolute inset-[2px] border border-gray-600 rounded-sm opacity-30" />
+      </div>
+
+      {/* THE SCENE - visible through the bus window */}
+      <div className="absolute top-[18%] bottom-[22%] left-[8%] right-[8%] overflow-hidden z-10">
+        {hasVideo ? (
+          <video
+            ref={videoRef}
+            src={tourVideo}
+            className="absolute inset-0 w-full h-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+        ) : sceneImage ? (
+          <div className="pan-anim absolute inset-0 w-[200%] h-full flex">
+            <div className="w-1/2 h-full bg-cover bg-center" style={{ backgroundImage: "url(" + sceneImage + ")" }} />
+            <div className="w-1/2 h-full bg-cover bg-center" style={{ backgroundImage: "url(" + sceneImage + ")" }} />
+          </div>
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-900" />
+        )}
+
+        {/* Color overlay on scene */}
+        <div className={"absolute inset-0 bg-gradient-to-r " + overlayColor} />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40" />
+      </div>
+
+      {/* Glass reflection effect on window */}
+      <div className="absolute top-[18%] bottom-[22%] left-[8%] right-[8%] z-30 pointer-events-none">
+        <div className="absolute top-0 left-0 w-[40%] h-[40%] bg-gradient-to-br from-white/5 to-transparent rounded-br-full" />
+      </div>
+
+      {/* Touring label */}
       <motion.div
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full bg-black/50 backdrop-blur-sm border border-white/10"
+        className="absolute bottom-[24%] left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 z-40"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
